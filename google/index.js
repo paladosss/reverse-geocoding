@@ -19,6 +19,17 @@ function initMap() {
 
                 document.getElementById("coords").innerHTML = JSON.stringify(latlng);
 
+                const key = 'AIzaSyDCkf8oXjXMFHXCgTa-u54tVRIRCzqR5LQ';
+
+                axios
+                    .get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng.lat},${latlng.lng}&location_type=ROOFTOP&result_type=street_address&key=${key}`)
+                    .then(res => {
+                        console.log('axios: ', res.data);
+                        document.getElementById("address-api").innerHTML = res.data.results[0].formatted_address;
+                    }).catch(err => {
+                        console.log('axios err: ', err);
+                    })
+
                 geocoder
                     .geocode({ location: latlng })
                     .then((response) => {
@@ -48,13 +59,3 @@ function initMap() {
         }
     });
 }
-
-// const key = 'AIzaSyDCkf8oXjXMFHXCgTa-u54tVRIRCzqR5LQ';
-
-// axios
-//     .get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&location_type=ROOFTOP&result_type=street_address&key=${key}`)
-//     .then(res => {
-//         console.log('axios: ', res.data.response);
-
-//         document.getElementById('location').innerHTML = JSON.stringify(res.data);
-//     })
